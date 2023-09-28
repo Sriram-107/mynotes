@@ -31,53 +31,47 @@ class _RegisterViewState extends State<RegisterView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login Screen"),
+        title: const Text("Register View"),
       ),
-      body: FutureBuilder(
-          future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform,
+      body: Column(
+        children: [
+          TextField(
+            controller: _email,
+            keyboardType: TextInputType.emailAddress,
+            autocorrect: false,
+            enableSuggestions: false,
+            decoration: const InputDecoration(hintText: "Enter email here"),
           ),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.done:
-                return Column(
-                  children: [
-                    TextField(
-                      controller: _email,
-                      keyboardType: TextInputType.emailAddress,
-                      autocorrect: false,
-                      enableSuggestions: false,
-                      decoration:
-                          const InputDecoration(hintText: "Enter email here"),
-                    ),
-                    TextField(
-                      controller: _password,
-                      obscureText: true,
-                      enableSuggestions: false,
-                      autocorrect: false,
-                      decoration: const InputDecoration(
-                          hintText: "Enter password here"),
-                    ),
-                    TextButton(
-                      onPressed: () async {
-                        try {
-                          final userCred = await FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                                  email: _email.text, password: _password.text);
-                          print(userCred);
-                        } on FirebaseException catch (error) {
-                          print(error.runtimeType);
-                          print(error);
-                        }
-                      },
-                      child: Text("Login"),
-                    ),
-                  ],
-                );
-              default:
-                return CircularProgressIndicator();
-            }
-          }),
+          TextField(
+            controller: _password,
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
+            decoration: const InputDecoration(hintText: "Enter password here"),
+          ),
+          TextButton(
+            onPressed: () async {
+              try {
+                final userCred = await FirebaseAuth.instance
+                    .createUserWithEmailAndPassword(
+                        email: _email.text, password: _password.text);
+                print(userCred);
+              } on FirebaseException catch (error) {
+                print(error.runtimeType);
+                print(error);
+              }
+            },
+            child: const Text("Register"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context)
+                  .pushNamedAndRemoveUntil("/login/", (route) => false);
+            },
+            child: const Text("Registerd already? Login!"),
+          ),
+        ],
+      ),
     );
   }
 }
