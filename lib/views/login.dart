@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:mynotes/firebase_options.dart';
 import 'package:mynotes/main.dart';
+import 'dart:developer' as devtools show log;
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -14,6 +15,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
+
   @override
   void initState() {
     _email = TextEditingController();
@@ -30,6 +32,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final navigator = Navigator.of(context);
     return Scaffold(
       appBar: AppBar(title: const Text("Login View")),
       body: Column(
@@ -55,16 +58,17 @@ class _LoginViewState extends State<LoginView> {
                     .signInWithEmailAndPassword(
                         email: _email.text, password: _password.text);
                 if (userCred.user?.emailVerified ?? false) {
-                  print("Email Verified");
+                  devtools.log("Email Verified");
+                  navigator.pushNamedAndRemoveUntil("/notes", (route) => false);
                 } else {
                   // Navigator.of(context).push(MaterialPageRoute(
                   //     builder: (context) => const EmailVerificationView()));
                 }
 
-                print(userCred);
+                devtools.log(userCred.toString());
               } on FirebaseException catch (error) {
-                print(error.runtimeType);
-                print(error);
+                devtools.log(error.runtimeType.toString());
+                devtools.log(error.toString());
               }
             },
             child: const Text("Login"),

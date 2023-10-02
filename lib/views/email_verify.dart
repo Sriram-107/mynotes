@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as devtools show log;
 
 class EmailVerificationView extends StatefulWidget {
   const EmailVerificationView({super.key});
@@ -22,7 +23,7 @@ class _EmailVerificationViewState extends State<EmailVerificationView> {
               onPressed: () async {
                 final user = FirebaseAuth.instance.currentUser;
                 await user?.sendEmailVerification();
-                print("Verification sent");
+                devtools.log("Verification sent");
               },
               child: const Text("Send Email"))
         ],
