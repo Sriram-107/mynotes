@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:mynotes/constants/routes.dart';
 import 'package:mynotes/firebase_options.dart';
 import 'package:mynotes/main.dart';
 import 'dart:developer' as devtools show log;
@@ -59,7 +60,8 @@ class _LoginViewState extends State<LoginView> {
                         email: _email.text, password: _password.text);
                 if (userCred.user?.emailVerified ?? false) {
                   devtools.log("Email Verified");
-                  navigator.pushNamedAndRemoveUntil("/notes", (route) => false);
+                  navigator.pushNamedAndRemoveUntil(
+                      notesRoute, (route) => false);
                 } else {
                   // Navigator.of(context).push(MaterialPageRoute(
                   //     builder: (context) => const EmailVerificationView()));
@@ -76,7 +78,7 @@ class _LoginViewState extends State<LoginView> {
           TextButton(
             onPressed: () {
               Navigator.of(context)
-                  .pushNamedAndRemoveUntil('/register/', (route) => false);
+                  .pushNamedAndRemoveUntil(registerRoute, (route) => false);
             },
             child: const Text("Register Now!"),
           ),
